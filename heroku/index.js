@@ -16,7 +16,7 @@ const store = new SmoochApiStore({
     jwt
 });
 const lock = new MemoryLock();
-const webhookTriggers = ['message:appUser', 'postback'];
+const webhookTriggers = ['message:appUser', 'postback', 'appUser:link'];
 
 function createWebhook(smoochCore, target) {
     return smoochCore.webhooks.create({
@@ -70,7 +70,7 @@ if (process.env.SERVICE_URL) {
 }
 
 function createBot(appUser) {
-    const userId = appUser.userId || appUser._id;
+    const userId = appUser.userId || appUser._id || appUser.appUserId;
     return new SmoochApiBot({
         name,
         avatarUrl,
@@ -116,6 +116,23 @@ function handlePostback(req, res) {
         .then(() => res.end());
 }
 
+function handleUserlink(req, res) {
+  const stateMachine = new StateMachine({
+      script,
+      bot: createBot(req.body)
+  });
+
+  stateMachine.setState("mergeSuccess");
+
+  stateMachine.prompt("mergeSuccess")
+    .then(() => res.end())
+    .catch((err) => {
+        console.error('SmoochBot error:', err);
+        console.error(err.stack);
+        res.end();
+    });
+}
+
 app.post('/webhook', function(req, res, next) {
     const trigger = req.body.trigger;
 
@@ -126,6 +143,10 @@ app.post('/webhook', function(req, res, next) {
 
         case 'postback':
             handlePostback(req, res);
+            break;
+
+        case 'appUser:link':
+            handleUserlink(req, res);
             break;
 
         default:

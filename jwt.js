@@ -10,9 +10,10 @@ const jwt = jsonwebtoken.sign({
     }
 });
 
+console.log(jwt);
 module.exports = jwt;
 
-// If run directly, print JWT to cmd line 
+// If run directly, print JWT to cmd line
 if (process.argv[1] === __filename) {
     console.log(jwt);
 }
