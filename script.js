@@ -1,7 +1,6 @@
 'use strict';
 
 const Script = require('smooch-bot').Script;
-var sleep = require('sleep-promise');
 
 module.exports = new Script({
     processing: {
@@ -11,15 +10,12 @@ module.exports = new Script({
 
     start: {
         receive: (bot) => {
-            return bot.say('Hi! I\'m Smooch\'s Channel Bot 😎')
-                .then(sleep(100))
-                .then(() => bot.say('I\'ll show you how Smooch makes it possible to move conversations across messaging channels so that you can save 💸 on your SMS bill while delivering better, more engaging experiences to your users using the latest messaging apps 🔥'))
+            return bot.say('Hi! I\'m Smooch\'s Channel Linking Demo Bot 😎 - What\'s your name?')
                 .then(() => 'askName');
         }
     },
 
     askName: {
-        prompt: (bot) => bot.say('What\'s your name?'),
         receive: (bot, message) => {
             const name = message.text;
             return bot.setProp('name', name)
@@ -41,13 +37,10 @@ module.exports = new Script({
       prompt: (bot) => bot.say('Woohoo it worked! Are you still there? %[Yes](reply:Yes)'),
       receive: (bot, message) => {
         return bot.getProp('name')
-            .then((name) => bot.say(`Well ${name}, as you can see I haven't forgotten about you and your secret... 😈`))
-            .then(sleep(25))
+            .then((name) => bot.say(`Well ${name}, as you can see I haven't forgotten about you and your secret word... 😈`))
             .then(() => bot.getProp('secret'))
             .then((secret) => bot.say(`You told me that your secret is: "${secret}"`))
-            .then(sleep(25))
             .then(() => bot.say('![](http://i.giphy.com/l0HlujEDdIqEoicGQ.gif)'))
-            .then(sleep(25))
             .then(() => bot.say("I don't have anything more to say right now, but I hope you liked playing with me!"))
             .then(() => "finish");
         }
