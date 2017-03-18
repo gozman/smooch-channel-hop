@@ -13,6 +13,7 @@
     "express": "^4.13.4",
     "hbs": "^4.0.0",
     "jsonwebtoken": "^5.7.0",
+    "sleep-promise": "^2.0.0",
     "smooch-bot": "gozman/smooch-bot",
     "smooch-core": "^2.0.0"
   },
