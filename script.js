@@ -12,7 +12,7 @@ module.exports = new Script({
     start: {
         receive: (bot) => {
             return bot.say('Hi! I\'m Smooch\'s Channel Bot 😎')
-                .then(sleep(50))
+                .then(sleep(100))
                 .then(() => bot.say('I\'ll show you how Smooch makes it possible to move conversations across messaging channels so that you can save 💸 on your SMS bill while delivering better, more engaging experiences to your users using the latest messaging apps 🔥'))
                 .then(() => 'askName');
         }
@@ -24,8 +24,6 @@ module.exports = new Script({
             const name = message.text;
             return bot.setProp('name', name)
                 .then(() => bot.say(`Great! I'll call you ${name} - In order to prove that I remember who you are once I invite you to join me on another channel, tell me a secret word.`))
-                .then(sleep(50))
-                .then(() => bot.say(`I'll repeat it to you on the new messaging channel.`))
                 .then(() => 'promptMerge');
         }
     },
